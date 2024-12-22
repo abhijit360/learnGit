@@ -10,6 +10,8 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
+			coin: 'rgba(251, 208, 0,1)',
+			coinTooltip: 'rgba(251, 208, 0,0.3)',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
