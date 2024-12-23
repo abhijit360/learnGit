@@ -29,7 +29,9 @@ export default function Home() {
     if (commandComponents[0] !== "git") {
       // incorrect commands throws an error
       toast("Invalid command", {
-        description: "The command must meet the form of git [command] [aditional information or flags]",
+        description:
+          "The command must meet the form of git [command] [aditional information or flags]",
+        style: { background: "white", fontWeight: "bold", color: "black" },
       });
       return;
     }
