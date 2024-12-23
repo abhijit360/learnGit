@@ -1,11 +1,11 @@
-export default interface CommitType {
+export  interface CommitType {
   commitId: number;
   commitMessage: string;
   branchName: string;
   stagedChange?: boolean;
 }
 
-export default interface branch {
+export interface Branch {
     branchName: string;
     commits: CommitType[];
     parentBranch: string;

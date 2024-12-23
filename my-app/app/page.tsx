@@ -3,7 +3,7 @@ import { useState } from "react";
 import ChangeDot from "./MyComponents/ChangeDot";
 import CommandBox from "./MyComponents/CommandBox";
 import Title from "./MyComponents/Title";
-import CommitType from "@/types";
+import type {CommitType} from "@/types";
 
 export default function Home() {
   const [commits, setCommits] = useState<CommitType[]>([]);
