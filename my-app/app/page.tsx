@@ -2,13 +2,14 @@
 import { useState } from "react";
 import ChangeDot from "./MyComponents/ChangeDot";
 import CommandBox from "./MyComponents/CommandBox";
+import TerminalView from "./MyComponents/TerminalView";
 import Title from "./MyComponents/Title";
 import type { CommitType } from "@/types";
 import { toast } from "sonner";
 
 export default function Home() {
   const [commits, setCommits] = useState<CommitType[]>([]);
-  const branches: string[] = ["main", "branch1"];
+  const branches: string[] = [];
   function handleCreateCommit(
     commitMessage: string,
     commitId: number,
@@ -35,12 +36,17 @@ export default function Home() {
       });
       return;
     }
+    if(commandComponents[1] == "branch" ){
+
+    }
+  
   }
 
   return (
     <div className="bg-gray-800 h-screen">
       <div className="mr-60 ml-60">
         <Title />
+        <TerminalView terminalOutput="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi "/>
         <CommandBox
           createCommit={handleCreateCommit}
           handleGitCommit={handleGitCommand}

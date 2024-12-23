@@ -71,6 +71,9 @@ export default function CommandBox({
           >
             Commit
           </button>
+          {branches.length == 0 && <p className=" underline text-white font-light  self-end">Consider creating a branch</p>}
+          {
+            branches.length > 0 && 
           <Select onValueChange={setCurrentBranch}>
             <SelectTrigger className="w-[180px] bg-white">
               <SelectValue placeholder="Branch" />
@@ -86,7 +89,7 @@ export default function CommandBox({
                 </SelectItem>
               ))}
             </SelectContent>
-          </Select>
+          </Select>}
         </span>
       </div>
     </>
