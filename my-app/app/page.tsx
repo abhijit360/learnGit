@@ -22,6 +22,11 @@ export default function Home() {
       },
     ]);
   }
+
+  function handleGitCommand(cmd: string){
+    
+  }
+
   return (
     <div className="bg-gray-800 h-screen">
       <div className="mr-60 ml-60">
