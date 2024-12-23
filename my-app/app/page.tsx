@@ -3,7 +3,8 @@ import { useState } from "react";
 import ChangeDot from "./MyComponents/ChangeDot";
 import CommandBox from "./MyComponents/CommandBox";
 import Title from "./MyComponents/Title";
-import type {CommitType} from "@/types";
+import type { CommitType } from "@/types";
+import { toast } from "sonner";
 
 export default function Home() {
   const [commits, setCommits] = useState<CommitType[]>([]);
@@ -23,15 +24,26 @@ export default function Home() {
     ]);
   }
 
-  function handleGitCommand(cmd: string){
-    
+  function handleGitCommand(cmd: string) {
+    const commandComponents = cmd.split(" ");
+    if (commandComponents[0] !== "git") {
+      // incorrect commands throws an error
+      toast("Invalid command", {
+        description: "The command must meet the form of git [command] [aditional information or flags]",
+      });
+      return;
+    }
   }
 
   return (
     <div className="bg-gray-800 h-screen">
       <div className="mr-60 ml-60">
         <Title />
-        <CommandBox createCommit={handleCreateCommit} branches={branches} />
+        <CommandBox
+          createCommit={handleCreateCommit}
+          handleGitCommit={handleGitCommand}
+          branches={branches}
+        />
         <div className="flex flex-row">
           {commits.map((commitMetaData, index) => (
             <ChangeDot

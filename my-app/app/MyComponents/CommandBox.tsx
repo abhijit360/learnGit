@@ -10,11 +10,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type PossibleInput = string | number | readonly string[] | undefined;
-
 export default function CommandBox({
   createCommit,
   branches,
+  handleGitCommit,
 }: {
   createCommit: (
     commitMessage: string,
@@ -22,13 +21,17 @@ export default function CommandBox({
     branchName: string
   ) => {};
   branches: string[];
+  handleGitCommit: (command: string) => {};
 }) {
-  const [command, setCommand] = useState<PossibleInput>(undefined);
+  
+  const [command, setCommand] = useState<string>("");
   const [commitMsg, setCommitMsg] = useState<string>("");
   const [currentBranch, setCurrentBranch] = useState<string>("");
+  
   const handleClickEnter = (e: React.KeyboardEvent) => {
     if (e.key == "Enter") {
       e.preventDefault(); // prevent the enter from moving to new line
+      handleGitCommit(command)
       console.log("we are submitting the following command", command);
       setCommand("");
     }
@@ -56,7 +59,7 @@ export default function CommandBox({
         <input
           type="text"
           value={commitMsg}
-          onChange={(e) => setCommitMsg(e.target.value)}
+          onChange={(e) => setCommitMsg(e.target.value.toString())}
           maxLength={150}
           placeholder="Enter a commit message..."
           className="p-2 h-12 mb-2 w-[32rem] text-white bg-transparent border border-solid border-white rounded-md"
