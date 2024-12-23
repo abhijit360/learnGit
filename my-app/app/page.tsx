@@ -1,31 +1,42 @@
 "use client";
-import { useEffect } from "react";
+import { useState } from "react";
 import ChangeDot from "./MyComponents/ChangeDot";
 import CommandBox from "./MyComponents/CommandBox";
 import Title from "./MyComponents/Title";
+import CommitType from "@/types";
 
 export default function Home() {
-  const commits: any[] = [];
-  const branches: string[] = ["main","branch1"]
+  const [commits, setCommits] = useState<CommitType[]>([]);
+  const branches: string[] = ["main", "branch1"];
   function handleCreateCommit(
     commitMessage: string,
     commitId: number,
     branchName: string
   ) {
-    commits.push(
-      <ChangeDot
-        commitId={commitId}
-        commitMessage={commitMessage}
-        branchName={branchName}
-      />
-    );
+    setCommits((prev) => [
+      ...prev,
+      {
+        commitId: commitId,
+        commitMessage: commitMessage,
+        branchName: branchName,
+      },
+    ]);
   }
   return (
     <div className="bg-gray-800 h-screen">
       <div className="mr-60 ml-60">
         <Title />
-
         <CommandBox createCommit={handleCreateCommit} branches={branches} />
+        <div className="flex flex-row">
+          {commits.map((commitMetaData, index) => (
+            <ChangeDot
+              key={index}
+              commitId={commitMetaData.commitId}
+              commitMessage={commitMetaData.commitMessage}
+              branchName={commitMetaData.branchName}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

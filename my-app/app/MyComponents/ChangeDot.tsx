@@ -4,16 +4,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type CommitType from "@/types";
 
 export default function ChangeDot({
   commitId,
   commitMessage,
   branchName,
-}: {
-  commitId: number;
-  commitMessage: string;
-  branchName: string;
-}) {
+}: CommitType) {
   return (
     <TooltipProvider>
       <Tooltip>
