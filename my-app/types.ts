@@ -2,7 +2,7 @@ export  interface CommitType {
   commitId: number;
   commitMessage: string;
   branchName: string;
-  stagedChange?: boolean;
+  state?: "unstaged" | "staged" | "commited";
 }
 
 export interface Branch {

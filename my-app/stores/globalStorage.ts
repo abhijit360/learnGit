@@ -4,10 +4,17 @@ import type { CommitType } from "@/types";
 
 interface globalStoreInterface {
   branches: Map<string, Branch>;
+  currentBranch: string;
 }
 
 export const useGlobalStore = create<globalStoreInterface>((set) => ({
   branches: new Map<string, Branch>(),
+  currentBranch: "",
+  setCurrentBranch: (newBranch: string) => {
+    set((state) => {
+      return { currentBranch: newBranch, branches: state.branches };
+    });
+  },
   createBranch: ({
     parentBranch,
     branchName,
@@ -27,6 +34,6 @@ export const useGlobalStore = create<globalStoreInterface>((set) => ({
         fromCommit,
         commits: [] as CommitType[],
       });
-      return { branches: newBranches };
+      return { currentBranch: state.currentBranch, branches: newBranches };
     }),
 }));
