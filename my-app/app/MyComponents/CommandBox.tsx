@@ -32,7 +32,6 @@ export default function CommandBox({
     if (e.key == "Enter") {
       e.preventDefault(); // prevent the enter from moving to new line
       handleGitCommit(command)
-      console.log("we are submitting the following command", command);
       setCommand("");
     }
   };

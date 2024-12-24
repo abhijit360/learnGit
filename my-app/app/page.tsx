@@ -12,10 +12,14 @@ import { toast } from "sonner";
 export default function Home() {
   const [commits, setCommits] = useState<CommitType[]>([]);
   const [terminalOutput, setTerminalOutput] = useState<JSX.Element[]>([]);
-  // const branchesArr: string[] = [];
-
+  const [branchesArr, setBrancesArr] = useState<string[]>([]);
   const { currentBranch, branches } = useGlobalStore();
   const [unstagedCommits, setUnstagedCommits] = useState<CommitType[]>([]);
+
+  useEffect(() => {
+    // update the available branches
+    setBrancesArr(Array.from(branches.keys()));
+  }, [branches]);
 
   function getUnstagedCommits() {
     const commits = branches.get(currentBranch)?.commits;
@@ -50,6 +54,19 @@ export default function Home() {
       </span>
     );
   }
+
+  function displayBranches(branches: string[]) {
+    return branches.map((branchName, index) =>
+      branchName == currentBranch ? (
+        <span key={index} className=" text-green-500">
+          *{branchName}
+        </span>
+      ) : (
+        <span key={index}>{branchName}</span>
+      )
+    );
+  }
+
   function handleCreateCommit(
     commitMessage: string,
     commitId: number,
@@ -65,9 +82,12 @@ export default function Home() {
     ]);
   }
 
-  function handleGitCommand(cmd: string) {
-    const commandComponents = cmd.split(" ");
-    if (commandComponents[0] !== "git") {
+  function handleGitCommand(inputCommand: string) {
+    // Regex to match the Git command structure
+    const commandRegex = /^git\s+([a-z-]+)(.*)$/;
+    const match = inputCommand.match(commandRegex);
+
+    if (!match) {
       // incorrect commands throws an error
       toast("Invalid command", {
         description:
@@ -76,19 +96,62 @@ export default function Home() {
       });
       return;
     }
-    if (commandComponents[1] == "branch") {
-    }
+
+    // Extract the base command
+    const baseCommand = match[1];
+
+    // Split the remaining part into tokens for options and positional arguments
+    const remainingParts = match[2].trim().split(/\s+/);
+
+    const options: string[] = [];
+    const positionalArgs: string[] = [];
+
+    remainingParts.forEach((part) => {
+      if (part.startsWith("-")) {
+        options.push(part);
+      } else {
+        positionalArgs.push(part);
+      }
+    });
+
+    // Extract quoted arguments
+    const args = [...inputCommand.matchAll(/['"]([^'"]*)['"]/g)].map(
+      (match) => match[1]
+    );
+    console.log("paresed format", [
+      baseCommand,
+      {
+        options,
+        positionalArgs,
+        quotedArgs: args,
+      },
+    ]);
+    return [
+      baseCommand, // branch, merge
+      {
+        options, // flags etc
+        positionalArgs,
+        quotedArgs: args,
+      },
+    ];
   }
 
   return (
     <div className="bg-gray-800 h-screen">
       <div className="mr-60 ml-60">
         <Title />
-        <TerminalView terminalOutput={terminalOutput} />
+        <TerminalView
+          terminalOutput={[
+            <span className="flex flex-row gap-2 text-red-500"> Unstaged</span>,
+            <span className="flex flex-row gap-2 text-red-500"> Unstaged</span>,
+            <span className="flex flex-row gap-2 text-red-500"> Unstaged</span>,
+            <span className="flex flex-row gap-2 text-red-500"> Unstaged</span>,
+          ]}
+        />
         <CommandBox
           createCommit={handleCreateCommit}
           handleGitCommit={handleGitCommand}
-          branches={branches}
+          branches={branchesArr}
         />
         <div className="flex flex-row">
           {commits.map((commitMetaData, index) => (
